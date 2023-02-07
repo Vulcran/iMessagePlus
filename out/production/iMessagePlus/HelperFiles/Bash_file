@@ -1,3 +1,0 @@
-#!/bin/bash 
-
-osascript -e 'tell application "Messages" to send "Test, HelperFile, Relative Location" to buddy " 9843779422"'

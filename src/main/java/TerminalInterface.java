@@ -2,7 +2,7 @@ import com.sun.tools.javac.Main;
 
 import java.io.*;
 
-public class TerminalInterface extends Builder {
+public class TerminalInterface{
     protected String text;
     protected String number;
     protected String contactName;
@@ -12,7 +12,7 @@ public class TerminalInterface extends Builder {
     public static void messageHelper(String textBox, String numberBox, boolean mode){
         sendPace = 1;
         try {
-            bash = new File("/Users/will/Desktop/Bash_file");
+            bash = new File("HelperFiles/Bash_File");
             if(mode){
                 messegeEdit(textBox,numberBox);
             }else{
@@ -26,7 +26,7 @@ public class TerminalInterface extends Builder {
     public static boolean messageHelper(String textBox, String numberBox, boolean mode, int pace){
         sendPace = pace;
         try {
-            bash = new File("HelperFiles/Bash_File");
+            bash = new File("../../../HelperFiles/Bash_File");
             if(mode){
                 messegeEdit(textBox,numberBox);
             }else{
@@ -53,8 +53,21 @@ public class TerminalInterface extends Builder {
         return true;
     }
     protected static boolean messegeEdit(String textSting, String numberBox) throws InterruptedException{
+        FileWriter bashEditer = null;
         try{
-            FileWriter bashEditer = new FileWriter(bash);
+            bashEditer = new FileWriter(bash);
+        } catch (IOException e) {
+            try{
+                bash = new File("HelperFiles/Bash_File");
+                bashEditer = new FileWriter(bash);
+            } catch (IOException p) {
+                p.printStackTrace();
+            }
+            e.printStackTrace();
+        }
+        
+
+        try{
             BufferedWriter out = new BufferedWriter(bashEditer);
             out.write("#!/bin/bash \n\n");
             String combinedLine = "osascript -e 'tell application \"Messages\" to send \"" + textSting + "\" to buddy \"" + numberBox + "\"'";
@@ -67,6 +80,7 @@ public class TerminalInterface extends Builder {
             System.out.println("something happened");
             return false;
         }
+        
         return true;
     }
 }

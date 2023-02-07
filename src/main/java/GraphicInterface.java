@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
+
 public class GraphicInterface extends JFrame{
 
     private JTextField textField1;
@@ -83,7 +84,6 @@ public class GraphicInterface extends JFrame{
                     saveToContactsRadioButton.setSelected(false);
                     saveToContactsRadioButton.setEnabled(false);
                 }
-                System.out.println(slider1.getValue());
             }
         });
 //        textField3.getDocument().addDocumentListener(new SimpleDocumentListener() {
@@ -216,6 +216,7 @@ public class GraphicInterface extends JFrame{
         }
         comboBox1.setModel(new DefaultComboBoxModel<String>(holder));
     }
+
 
 
 //    public interface SimpleDocumentListener extends DocumentListener {

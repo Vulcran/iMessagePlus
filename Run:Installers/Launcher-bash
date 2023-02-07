@@ -1,0 +1,5 @@
+#!/bin/bash 
+
+Cd
+Cd out/artifacts/iMessagePlus_jar
+Java -jar imessagePlus.jar
