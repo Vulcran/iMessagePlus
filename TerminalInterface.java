@@ -2,7 +2,7 @@ import com.sun.tools.javac.Main;
 
 import java.io.*;
 
-public class TerminalInterface extends Main {
+public class TerminalInterface extends Builder {
     protected String text;
     protected String number;
     protected String contactName;
