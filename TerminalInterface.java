@@ -26,7 +26,7 @@ public class TerminalInterface extends Builder {
     public static boolean messageHelper(String textBox, String numberBox, boolean mode, int pace){
         sendPace = pace;
         try {
-            bash = new File("/Users/will/Desktop/Bash_file");
+            bash = new File("HelperFiles/Bash_File");
             if(mode){
                 messegeEdit(textBox,numberBox);
             }else{
