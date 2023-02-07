@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="RunMe">
+    <output-path>$PROJECT_DIR$/Run:Installers</output-path>
+    <root id="archive" name="iMessagePlus.jar">
+      <element id="module-output" name="iMessagePlus" />
+    </root>
+  </artifact>
+</component>
