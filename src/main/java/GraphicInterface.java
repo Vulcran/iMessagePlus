@@ -1,8 +1,7 @@
-import com.sun.tools.javac.Main;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.nio.file.FileSystems;
 import java.util.ArrayList;
 
 
@@ -19,14 +18,16 @@ public class GraphicInterface extends JFrame{
     private JComboBox comboBox2;
     private JTextPane textPane1;
     private JPanel guiPanel;
-    private JTextField textField3;
-    private JTextField textField4;
+    private JTextField dateField;
+    private JTextField timeField;
     private JRadioButton PMRadioButton;
     private JRadioButton AMRadioButton;
     private JLabel dateWarning;
     private JSlider slider1;
     private JLabel bunny;
     private JLabel turtle;
+    private JLabel messageTracker;
+    private JLabel termOut;
     private boolean messageMode;
 
     public GraphicInterface(){
@@ -36,12 +37,12 @@ public class GraphicInterface extends JFrame{
                 if(messageMode){
                     modeButton.setText(" 😈  Spam Mode  😈 ");
                     messageMode = false;
-                    textField3.setText("");
-                    textField4.setText("");
-                    textField3.setBackground(new Color(24,24,24, 142));
-                    textField4.setBackground(new Color(24,24,24, 142));
-                    textField3.setEditable(false);
-                    textField4.setEditable(false);
+                    dateField.setText("");
+                    timeField.setText("");
+                    dateField.setBackground(new Color(24,24,24, 142));
+                    timeField.setBackground(new Color(24,24,24, 142));
+                    dateField.setEditable(false);
+                    timeField.setEditable(false);
                     AMRadioButton.setSelected(false);
                     AMRadioButton.setEnabled(false);
                     PMRadioButton.setSelected(false);
@@ -51,10 +52,10 @@ public class GraphicInterface extends JFrame{
                 }else {
                     modeButton.setText("🕚 Delayed Mode 🕚");
                     messageMode = true;
-                    textField3.setBackground(new Color(255,255,255));
-                    textField4.setBackground(new Color(255,255,255));
-                    textField3.setEditable(true);
-                    textField4.setEditable(true);
+                    dateField.setBackground(new Color(255,255,255));
+                    timeField.setBackground(new Color(255,255,255));
+                    dateField.setEditable(true);
+                    timeField.setEditable(true);
                     AMRadioButton.setSelected(false);
                     AMRadioButton.setEnabled(true);
                     PMRadioButton.setSelected(false);
@@ -111,25 +112,35 @@ public class GraphicInterface extends JFrame{
         });
 
 
-        textField3.addKeyListener(new KeyAdapter() {
+        dateField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e){
                 super.keyTyped(e);
-
-                if(!dataValidation(textField3,e,'/')) {
+                if(!dataValidation(dateField,e,'/')) {
                     dateWarning.setVisible(true);
                 }else {
                     dateWarning.setVisible(false);
-
                 }
             }
         });
 
-        textField4.addKeyListener(new KeyAdapter() {
+        timeField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
                 super.keyTyped(e);
-                if(!dataValidation(textField4,e,':')) {
+                try{
+                    String absLoc = FileSystems.getDefault()
+                            .getPath("")
+                            .toAbsolutePath()
+                            .toString();
+//                    absLoc = absLoc.substring(0,absLoc.indexOf("iMessagePlus"));
+                    termOut.setText(absLoc);
+                    termOut.setVisible(true);
+                }catch (Exception p){
+                    termOut.setText(p.toString());
+                    termOut.setVisible(true);
+                }
+                if(!dataValidation(timeField,e,':')) {
                     dateWarning.setVisible(true);
                 }else {
                     dateWarning.setVisible(false);
@@ -140,20 +151,37 @@ public class GraphicInterface extends JFrame{
         sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int pace = 1;
-                if(!messageMode){
-                    pace = (slider1.getValue()+1)*100;
-                }
+                Thread messageThread = new Thread(new TerminalInterface());
 
+                int pace = 1;
+                //non blocking thread
+                //asycronous threads
+
+                if(saveToContactsRadioButton.isSelected()){
+                    ContactHandler test = new ContactHandler();
+                    test.dataWritter();
+                }
+                if(!messageMode){
+                    pace = (slider1.getValue()+1)*40;
+
+                }
                 if(comboBox1.getSelectedItem().equals("------------")){
-                    TerminalInterface.messageHelper(editorPane1.getText(),textField1.getText(), messageMode, pace);
+                    Message currMessage = new Message(editorPane1.getText(),textField1.getText(), messageMode, pace, new Thread(new TerminalInterface()));
+                    TerminalInterface.dataInput(currMessage);
+                    messageThread.start();
                 }else{
                     int numLength = comboBox1.getSelectedItem().toString().length();
                     int beginNumIndex = comboBox1.getSelectedItem().toString().indexOf('-');
                     String parsNum = comboBox1.getSelectedItem().toString().substring(beginNumIndex+1,numLength);
-                    TerminalInterface.messageHelper(editorPane1.getText(),parsNum, messageMode,pace);
-                }
 
+                    Message currMessage = new Message(editorPane1.getText(), parsNum, messageMode,pace, new Thread(new TerminalInterface()));
+                    TerminalInterface.dataInput(currMessage);
+                    messageThread.start();
+                    Builder.messageHistory.add(currMessage);
+                }
+//                if(!sendSucess){
+//                    sendButton.setBackground(Color.red);
+//                }
             }
         });
     }
@@ -184,7 +212,7 @@ public class GraphicInterface extends JFrame{
 
         // checks the key typed
         if(!Character.isDigit(key.getKeyChar())&&key.getExtendedKeyCode()!=8){
-            System.out.println("key overwrite");
+//            System.out.println("key overwrite");
             valid=false;
             //allows a special character
             if(specialAuthorized==key.getKeyChar()){
@@ -216,24 +244,4 @@ public class GraphicInterface extends JFrame{
         }
         comboBox1.setModel(new DefaultComboBoxModel<String>(holder));
     }
-
-
-
-//    public interface SimpleDocumentListener extends DocumentListener {
-//        void update(DocumentEvent e);
-//
-//        @Override
-//        default void insertUpdate(DocumentEvent e) {
-//            update(e);
-//        }
-//        @Override
-//        default void removeUpdate(DocumentEvent e) {
-//            update(e);
-//        }
-//        @Override
-//        default void changedUpdate(DocumentEvent e) {
-//            update(e);
-//        }
-//    }
-
 }

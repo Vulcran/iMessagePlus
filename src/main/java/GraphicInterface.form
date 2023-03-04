@@ -253,7 +253,7 @@
           <visible value="false"/>
         </properties>
       </component>
-      <component id="bcd7" class="javax.swing.JTextField" binding="textField4" default-binding="true">
+      <component id="bcd7" class="javax.swing.JTextField" binding="timeField" default-binding="true">
         <constraints>
           <grid row="5" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="160" height="-1"/>
@@ -261,7 +261,7 @@
         </constraints>
         <properties/>
       </component>
-      <component id="df0f2" class="javax.swing.JTextField" binding="textField3" default-binding="true">
+      <component id="df0f2" class="javax.swing.JTextField" binding="dateField">
         <constraints>
           <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="160" height="-1"/>
@@ -295,13 +295,21 @@
           <text value="🐇"/>
         </properties>
       </component>
-      <component id="526da" class="javax.swing.JLabel">
+      <component id="526da" class="javax.swing.JLabel" binding="messageTracker">
         <constraints>
           <grid row="4" column="10" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <font size="22"/>
           <text value="Message Tracker"/>
+        </properties>
+      </component>
+      <component id="214e1" class="javax.swing.JLabel" binding="termOut">
+        <constraints>
+          <grid row="2" column="10" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Label"/>
         </properties>
       </component>
     </children>
